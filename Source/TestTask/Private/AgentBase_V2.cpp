@@ -2,8 +2,8 @@
 
 
 #include "AgentBase_V2.h"
-
 #include "AIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 // Sets default values
 AAgentBase_V2::AAgentBase_V2()
@@ -59,6 +59,7 @@ void AAgentBase_V2::LandJump()
 {
 	MeshComp->SetEnableGravity(false);
 	MeshComp->SetSimulatePhysics(false);
+	DefaultRoot->SetWorldLocation(MeshComp->GetComponentLocation());
 	MeshComp->K2_AttachToComponent(DefaultRoot, EName::None, EAttachmentRule::KeepWorld, EAttachmentRule::KeepWorld, EAttachmentRule::KeepWorld, true);
 	IsGrounded = true;
 }

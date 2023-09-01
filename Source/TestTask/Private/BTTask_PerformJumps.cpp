@@ -6,6 +6,7 @@
 #include "AgentBase_V2.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Bool.h"
+#include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
 #include "VisualLogger/VisualLogger.h"
 
 UBTTask_PerformJumps::UBTTask_PerformJumps(const FObjectInitializer& ObjectInitializer)
@@ -14,7 +15,8 @@ UBTTask_PerformJumps::UBTTask_PerformJumps(const FObjectInitializer& ObjectIniti
 	NodeName = "Perform Jumps";
 	INIT_TASK_NODE_NOTIFY_FLAGS();
 	
-	BlackboardKey.AddBoolFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_PerformJumps, BlackboardKey));
+	//BlackboardKey.AddBoolFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_PerformJumps, BlackboardKey));
+	BlackboardKey.AddObjectFilter(this, GET_MEMBER_NAME_CHECKED(UBTTask_PerformJumps, BlackboardKey), AActor::StaticClass());
 }
 
 EBTNodeResult::Type UBTTask_PerformJumps::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -124,9 +126,9 @@ EBlackboardNotificationResult UBTTask_PerformJumps::OnBlackboardValueChange(cons
 		return EBlackboardNotificationResult::RemoveObserver;
 	}
 	
-	if (BlackboardKey.SelectedKeyType == UBlackboardKeyType_Bool::StaticClass())
+	if (BlackboardKey.SelectedKeyType == UBlackboardKeyType_Object::StaticClass())
 	{
-		if (const bool KeyValue = Blackboard.GetValue<UBlackboardKeyType_Bool>(ChangedKeyID); KeyValue == false)
+		if (Blackboard.GetValue<UBlackboardKeyType_Object>(ChangedKeyID) == nullptr)
 		{
 			MyMemory->NodeResult = EBTNodeResult::Succeeded;
 			return EBlackboardNotificationResult::RemoveObserver;

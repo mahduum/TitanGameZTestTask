@@ -45,17 +45,17 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Physics")
 	float JumpForce;
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Jobs")//assign to building but maybe change to load the whole tree
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Assignments")
 	void AssignTo(AActor* Actor);
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Jobs")
-	void AbortAssignment();
-
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Jobs")
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Assignments")
+	void Unassign();
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Assignments")
 	void ChangeColor();
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Jobs")
-	void ActivateSound(bool bNewIsActive);
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Assignments")
+	bool IsAssigned();
 
 	UFUNCTION(BlueprintCallable, Category="Physics")
 	bool CanJump() const { return IsGrounded; }

@@ -8,13 +8,13 @@
 ABuildingBase::ABuildingBase()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Default Root"));
-	DefaultRoot->Mobility = EComponentMobility::Stationary;
+	DefaultRoot->Mobility = EComponentMobility::Static;
 	SetRootComponent(DefaultRoot);
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Presentation Mesh"));
 	MeshComponent->SetupAttachment(RootComponent);
-	MeshComponent->Mobility = EComponentMobility::Stationary;
+	MeshComponent->Mobility = EComponentMobility::Static;
 }
 
 // Called when the game starts or when spawned
