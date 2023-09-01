@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/Pawn.h"
 #include "AgentBase.generated.h"
 
@@ -20,20 +21,33 @@ class TESTTASK_API AAgentBase : public APawn
 public:
 	// Sets default values for this pawn's properties
 	AAgentBase();//Initialize in 
+
+private:
+
 	FGameplayTagDelegate CreateAndBind(FName FunctionName);
 
 protected:
-	// UPROPERTY(EditAnywhere)
-	// UStaticMeshComponent* MeshComponent;
+
+	UPROPERTY(BlueprintReadOnly)
+	USceneComponent* DefaultRoot;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Appearence")
+	UStaticMeshComponent* MeshComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Movement")
+	UFloatingPawnMovement* PawnMovement;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadWrite, Category="Physics")
+	bool IsGrounded;
 
 	UPROPERTY(BlueprintReadWrite, Category="Jobs | Tags")
 	FGameplayTagContainer JobTags;
 
 	UFUNCTION(BlueprintImplementableEvent, Category="Jobs")
-	void PerformJumpJob();
+	void PerformJumpJob();//can be changed to "one-off" job
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Jobs")
 	void PerformPlayAudioJob();
@@ -59,5 +73,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Jobs")
 	void ScheduleJobsByTags(FGameplayTagContainer InJobTags);
+
+	UFUNCTION(BlueprintCallable, Category="Physics")
+	bool CanJump() const { return IsGrounded; }
+
+	UFUNCTION(BlueprintNativeEvent, Category="Physics")
+	void JumpOnce();//todo implement default???
 
 };

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Agents/AgentBase.h"
+#include "AgentBase.h"
 
 #include "NativeGameplayTags.h"
 UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_Jumping_Job, "Gameplay.Job.Jump");
@@ -11,21 +11,25 @@ UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_Change_Color_Job, "Gameplay.Job.Change.Color
 // Sets default values
 AAgentBase::AAgentBase()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+
+	/*Bind all tags for job ability regardless whether the agent will have assigned all tags and actually be able to perform all the jobs*/
 	GameplayTagToDelegateMap.Add(TAG_Gameplay_Jumping_Job, CreateAndBind(FName("PerformJumpJob")));
 	GameplayTagToDelegateMap.Add(TAG_Gameplay_Playing_Audio_Job, CreateAndBind(FName("PerformPLayAudioJob")));
 	GameplayTagToDelegateMap.Add(TAG_Gameplay_Change_Color_Job, CreateAndBind(FName("PerformChangeColorJob")));
 
-	// DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultRoot"));
-	// SetRootComponent(DefaultRoot);
-	// MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
-	// SetRootComponent(RootComponent);
-	// MeshComponent->SetupAttachment(RootComponent);
-	// MeshComponent->SetConstraintMode(EDOFMode::SixDOF);
-	// MeshComponent->SetEnableGravity(false);
-	// MeshComponent->SetSimulatePhysics(false);
+	DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultRoot"));
+	SetRootComponent(DefaultRoot);
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	MeshComp->SetupAttachment(RootComponent);
+	MeshComp->SetConstraintMode(EDOFMode::SixDOF);
+	MeshComp->SetEnableGravity(false);
+	MeshComp->SetSimulatePhysics(false);
+
+	PawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(FName("Floating Pawn Movement"));
+	PawnMovement->SetAutoActivate(true);
+
+	IsGrounded = true;
 }
 
 FGameplayTagDelegate AAgentBase::CreateAndBind(FName FunctionName)
@@ -67,8 +71,13 @@ void AAgentBase::ScheduleJobsByTags(FGameplayTagContainer InJobTags)
 	{
 		if(JobTags.HasTag(Element))
 		{
-			GameplayTagToDelegateMap[Element].Execute();
+			GameplayTagToDelegateMap[Element].Execute();//this one will execute delegates defined in bps, 
 		}
 	}
+}
+
+void AAgentBase::JumpOnce_Implementation()
+{
+	
 }
 
