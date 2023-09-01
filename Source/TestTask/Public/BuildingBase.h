@@ -14,7 +14,6 @@ class TESTTASK_API ABuildingBase : public AActor, public IGameplayTagAssetInterf
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	ABuildingBase();
 
 protected:
@@ -23,8 +22,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* MeshComponent;
-	
-	// Called when the game starts or when spawned
+
 	virtual void BeginPlay() override;
 
 public:
