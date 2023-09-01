@@ -11,19 +11,15 @@
 DECLARE_DYNAMIC_DELEGATE(FGameplayTagDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStopAllJobsDelegate);
 
-// Bind a method to a gameplay tag.
-
 UCLASS(Blueprintable, Abstract)
 class TESTTASK_API AAgentBase : public APawn
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
-	AAgentBase();//Initialize in 
+	AAgentBase();
 
 private:
-
 	FGameplayTagDelegate CreateAndBind(FName FunctionName);
 
 protected:
@@ -37,7 +33,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Movement")
 	UFloatingPawnMovement* PawnMovement;
 	
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(BlueprintReadWrite, Category="Physics")
@@ -47,7 +42,7 @@ protected:
 	FGameplayTagContainer JobTags;
 
 	UFUNCTION(BlueprintImplementableEvent, Category="Jobs")
-	void PerformJumpJob();//can be changed to "one-off" job
+	void PerformJumpJob();
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Jobs")
 	void PerformPlayAudioJob();
@@ -60,24 +55,16 @@ protected:
 
 	UPROPERTY(BlueprintAssignable, Category="Jobs")
 	FStopAllJobsDelegate EventStopAllJobs;
-	
-	// Create a map to associate gameplay tags with delegate instances.
+
 	TMap<FGameplayTag, FGameplayTagDelegate> GameplayTagToDelegateMap;
 
-public:	
-	// Called every frame
+public:
+	
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category="Jobs")
 	void ScheduleJobsByTags(FGameplayTagContainer InJobTags);
 
 	UFUNCTION(BlueprintCallable, Category="Physics")
 	bool CanJump() const { return IsGrounded; }
-
-	UFUNCTION(BlueprintNativeEvent, Category="Physics")
-	void JumpOnce();//todo implement default???
-
 };

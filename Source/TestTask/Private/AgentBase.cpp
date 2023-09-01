@@ -8,7 +8,6 @@ UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_Jumping_Job, "Gameplay.Job.Jump");
 UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_Playing_Audio_Job, "Gameplay.Job.Play.Audio");
 UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_Change_Color_Job, "Gameplay.Job.Change.Color");
 
-// Sets default values
 AAgentBase::AAgentBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -39,7 +38,6 @@ FGameplayTagDelegate AAgentBase::CreateAndBind(FName FunctionName)
 	return Delegate;
 }
 
-// Called when the game starts or when spawned
 void AAgentBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -50,16 +48,9 @@ void AAgentBase::StopAllJobs()
 	EventStopAllJobs.Broadcast();
 }
 
-// Called every frame
 void AAgentBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
-
-// Called to bind functionality to input
-void AAgentBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
 void AAgentBase::ScheduleJobsByTags(FGameplayTagContainer InJobTags)
@@ -71,13 +62,8 @@ void AAgentBase::ScheduleJobsByTags(FGameplayTagContainer InJobTags)
 	{
 		if(JobTags.HasTag(Element))
 		{
-			GameplayTagToDelegateMap[Element].Execute();//this one will execute delegates defined in bps, 
+			GameplayTagToDelegateMap[Element].Execute();
 		}
 	}
-}
-
-void AAgentBase::JumpOnce_Implementation()
-{
-	
 }
 

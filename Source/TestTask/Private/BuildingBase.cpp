@@ -26,21 +26,21 @@ void ABuildingBase::BeginPlay()
 void ABuildingBase::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
 {
 	TagContainer.Reset();
-	TagContainer.AppendTags(JobTags);
+	TagContainer.AppendTags(AssignmentTags);
 }
 
 bool ABuildingBase::HasMatchingGameplayTag(FGameplayTag TagToCheck) const
 {
-	return JobTags.HasTag(TagToCheck);
+	return AssignmentTags.HasTag(TagToCheck);
 }
 
 bool ABuildingBase::HasAllMatchingGameplayTags(const FGameplayTagContainer& TagContainer) const
 {
-	return JobTags.HasAll(TagContainer);
+	return AssignmentTags.HasAll(TagContainer);
 }
 
 bool ABuildingBase::HasAnyMatchingGameplayTags(const FGameplayTagContainer& TagContainer) const
 {
-	return JobTags.HasAny(TagContainer);
+	return AssignmentTags.HasAny(TagContainer);
 }
 
